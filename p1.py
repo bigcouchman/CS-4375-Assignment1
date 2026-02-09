@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from ucimlrepo import fetch_ucirepo
 
 class LinearReg:
-    def _init_(self, learning_rate=0.01, num_iterations=1000):
+    def __init__(self, learning_rate=0.01, num_iterations=1000):
         self.learning_rate = learning_rate
         self.num_iterations = num_iterations
         self.weights = None
@@ -28,7 +28,7 @@ class LinearReg:
             self.weights = self.weights - (self.learning_rate * d_weights)
             self.bias = self.bias - (self.learning_rate * d_bias)
     
-    def predicting(self, X):
+    def predict(self, X):
         return np.dot(X, self.weights) + self.bias
     def mse(self, actual_y, predict_y):
         return np.mean((actual_y - predict_y) ** 2)
@@ -48,5 +48,14 @@ def data_preproc(df, column_target):
     return scaled_x, y.values, x.columns
 
 if __name__ == "__main__":
-    pass
+    wines = fetch_ucirepo(id=186)
+
+    x_frame = wines.data.features
+    y_frame = wines.data.targets
+
+    column_target = y_frame.columns[0]
+    df = pd.concat([x_frame, y_frame], axis = 1)
+
+    printf("Loaded dataset.")
+    
             

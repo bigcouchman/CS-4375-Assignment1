@@ -52,7 +52,6 @@ coverage.xml
 *.pot
 
 # Django stuff:
-*.log
 local_settings.py
 db.sqlite3
 
@@ -110,12 +109,3 @@ dmypy.json
 
 # macOS
 .DS_Store
-
-# Project specific
-logs/
-plots/
-*.log
-*.png
-*.jpg
-*.jpeg
-*.svg

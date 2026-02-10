@@ -1,0 +1,64 @@
+2026-02-09 22:31:25,821 - Trial: alpha=0.0001, lr=constant, eta0=0.01, iters=500, Val MSE=0.6077
+2026-02-09 22:31:25,833 - Trial: alpha=0.0001, lr=constant, eta0=0.01, iters=1000, Val MSE=0.6077
+2026-02-09 22:31:25,841 - Trial: alpha=0.0001, lr=constant, eta0=0.01, iters=2000, Val MSE=0.6077
+2026-02-09 22:31:25,848 - Trial: alpha=0.0001, lr=constant, eta0=0.001, iters=500, Val MSE=0.5474
+2026-02-09 22:31:25,853 - Trial: alpha=0.0001, lr=constant, eta0=0.001, iters=1000, Val MSE=0.5474
+2026-02-09 22:31:25,856 - Trial: alpha=0.0001, lr=constant, eta0=0.001, iters=2000, Val MSE=0.5474
+2026-02-09 22:31:25,870 - Trial: alpha=0.0001, lr=optimal, eta0=0.01, iters=500, Val MSE=0.9729
+2026-02-09 22:31:25,885 - Trial: alpha=0.0001, lr=optimal, eta0=0.01, iters=1000, Val MSE=0.9729
+2026-02-09 22:31:25,903 - Trial: alpha=0.0001, lr=optimal, eta0=0.01, iters=2000, Val MSE=0.9729
+2026-02-09 22:31:25,916 - Trial: alpha=0.0001, lr=optimal, eta0=0.001, iters=500, Val MSE=0.9729
+2026-02-09 22:31:25,931 - Trial: alpha=0.0001, lr=optimal, eta0=0.001, iters=1000, Val MSE=0.9729
+2026-02-09 22:31:25,949 - Trial: alpha=0.0001, lr=optimal, eta0=0.001, iters=2000, Val MSE=0.9729
+2026-02-09 22:31:25,964 - Trial: alpha=0.0001, lr=invscaling, eta0=0.01, iters=500, Val MSE=0.5479
+2026-02-09 22:31:25,972 - Trial: alpha=0.0001, lr=invscaling, eta0=0.01, iters=1000, Val MSE=0.5479
+2026-02-09 22:31:25,977 - Trial: alpha=0.0001, lr=invscaling, eta0=0.01, iters=2000, Val MSE=0.5479
+2026-02-09 22:31:25,988 - Trial: alpha=0.0001, lr=invscaling, eta0=0.001, iters=500, Val MSE=0.5445
+2026-02-09 22:31:25,998 - Trial: alpha=0.0001, lr=invscaling, eta0=0.001, iters=1000, Val MSE=0.5445
+2026-02-09 22:31:26,012 - Trial: alpha=0.0001, lr=invscaling, eta0=0.001, iters=2000, Val MSE=0.5445
+2026-02-09 22:31:26,020 - Trial: alpha=0.001, lr=constant, eta0=0.01, iters=500, Val MSE=0.6077
+2026-02-09 22:31:26,026 - Trial: alpha=0.001, lr=constant, eta0=0.01, iters=1000, Val MSE=0.6077
+2026-02-09 22:31:26,032 - Trial: alpha=0.001, lr=constant, eta0=0.01, iters=2000, Val MSE=0.6077
+2026-02-09 22:31:26,038 - Trial: alpha=0.001, lr=constant, eta0=0.001, iters=500, Val MSE=0.5473
+2026-02-09 22:31:26,042 - Trial: alpha=0.001, lr=constant, eta0=0.001, iters=1000, Val MSE=0.5473
+2026-02-09 22:31:26,046 - Trial: alpha=0.001, lr=constant, eta0=0.001, iters=2000, Val MSE=0.5473
+2026-02-09 22:31:26,060 - Trial: alpha=0.001, lr=optimal, eta0=0.01, iters=500, Val MSE=0.5872
+2026-02-09 22:31:26,075 - Trial: alpha=0.001, lr=optimal, eta0=0.01, iters=1000, Val MSE=0.5872
+2026-02-09 22:31:26,090 - Trial: alpha=0.001, lr=optimal, eta0=0.01, iters=2000, Val MSE=0.5872
+2026-02-09 22:31:26,105 - Trial: alpha=0.001, lr=optimal, eta0=0.001, iters=500, Val MSE=0.5872
+2026-02-09 22:31:26,120 - Trial: alpha=0.001, lr=optimal, eta0=0.001, iters=1000, Val MSE=0.5872
+2026-02-09 22:31:26,134 - Trial: alpha=0.001, lr=optimal, eta0=0.001, iters=2000, Val MSE=0.5872
+2026-02-09 22:31:26,140 - Trial: alpha=0.001, lr=invscaling, eta0=0.01, iters=500, Val MSE=0.5479
+2026-02-09 22:31:26,145 - Trial: alpha=0.001, lr=invscaling, eta0=0.01, iters=1000, Val MSE=0.5479
+2026-02-09 22:31:26,150 - Trial: alpha=0.001, lr=invscaling, eta0=0.01, iters=2000, Val MSE=0.5479
+2026-02-09 22:31:26,163 - Trial: alpha=0.001, lr=invscaling, eta0=0.001, iters=500, Val MSE=0.5445
+2026-02-09 22:31:26,175 - Trial: alpha=0.001, lr=invscaling, eta0=0.001, iters=1000, Val MSE=0.5445
+2026-02-09 22:31:26,185 - Trial: alpha=0.001, lr=invscaling, eta0=0.001, iters=2000, Val MSE=0.5445
+2026-02-09 22:31:26,193 - Trial: alpha=0.01, lr=constant, eta0=0.01, iters=500, Val MSE=0.6073
+2026-02-09 22:31:26,198 - Trial: alpha=0.01, lr=constant, eta0=0.01, iters=1000, Val MSE=0.6073
+2026-02-09 22:31:26,204 - Trial: alpha=0.01, lr=constant, eta0=0.01, iters=2000, Val MSE=0.6073
+2026-02-09 22:31:26,207 - Trial: alpha=0.01, lr=constant, eta0=0.001, iters=500, Val MSE=0.5470
+2026-02-09 22:31:26,211 - Trial: alpha=0.01, lr=constant, eta0=0.001, iters=1000, Val MSE=0.5470
+2026-02-09 22:31:26,215 - Trial: alpha=0.01, lr=constant, eta0=0.001, iters=2000, Val MSE=0.5470
+2026-02-09 22:31:26,247 - Trial: alpha=0.01, lr=optimal, eta0=0.01, iters=500, Val MSE=0.5475
+2026-02-09 22:31:26,284 - Trial: alpha=0.01, lr=optimal, eta0=0.01, iters=1000, Val MSE=0.5475
+2026-02-09 22:31:26,315 - Trial: alpha=0.01, lr=optimal, eta0=0.01, iters=2000, Val MSE=0.5475
+2026-02-09 22:31:26,343 - Trial: alpha=0.01, lr=optimal, eta0=0.001, iters=500, Val MSE=0.5475
+2026-02-09 22:31:26,370 - Trial: alpha=0.01, lr=optimal, eta0=0.001, iters=1000, Val MSE=0.5475
+2026-02-09 22:31:26,395 - Trial: alpha=0.01, lr=optimal, eta0=0.001, iters=2000, Val MSE=0.5475
+2026-02-09 22:31:26,405 - Trial: alpha=0.01, lr=invscaling, eta0=0.01, iters=500, Val MSE=0.5476
+2026-02-09 22:31:26,411 - Trial: alpha=0.01, lr=invscaling, eta0=0.01, iters=1000, Val MSE=0.5476
+2026-02-09 22:31:26,416 - Trial: alpha=0.01, lr=invscaling, eta0=0.01, iters=2000, Val MSE=0.5476
+2026-02-09 22:31:26,429 - Trial: alpha=0.01, lr=invscaling, eta0=0.001, iters=500, Val MSE=0.5445
+2026-02-09 22:31:26,441 - Trial: alpha=0.01, lr=invscaling, eta0=0.001, iters=1000, Val MSE=0.5445
+2026-02-09 22:31:26,452 - Trial: alpha=0.01, lr=invscaling, eta0=0.001, iters=2000, Val MSE=0.5445
+2026-02-09 22:31:26,455 - Best Params: {'alpha': 0.01, 'learning_rate': 'invscaling', 'eta0': 0.001, 'max_iter': 500}
+2026-02-09 22:31:26,455 - Train MSE: 0.5438, Test MSE: 0.5118, R2: 0.3178, Explained Variance: 0.3205
+2026-02-09 22:31:26,456 - Weights: [ 0.03869663 -0.18464064  0.03052353  0.11382545 -0.04348814  0.1124588
+ -0.1258278  -0.10235081  0.06131342  0.11061398  0.33489839], Bias: [5.76791672]
+2026-02-09 22:31:26,459 - Sim Iteration 0: MSE = 11.4269
+2026-02-09 22:31:26,697 - Sim Iteration 100: MSE = 0.5421
+2026-02-09 22:31:26,992 - Sim Iteration 200: MSE = 0.5420
+2026-02-09 22:31:27,264 - Sim Iteration 300: MSE = 0.5419
+2026-02-09 22:31:27,496 - Sim Iteration 400: MSE = 0.5418
+2026-02-09 22:31:29,426 - Are you satisfied with the best solution? Yes, SGDRegressor converged and provides similar performance to custom GD, with R2 around 0.3. Using a library simplifies implementation while maintaining good results.

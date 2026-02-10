@@ -146,8 +146,10 @@ if __name__ == "__main__":
     # Model evaluation on test data
     predict_test = model_optimal.predict(X_test)
     mse_test = mean_squared_error(y_test, predict_test)
+    r2 = r2_score(y_test, predict_test)
 
     print("Test MSE: ", mse_test)
+    print("Test R^2: ", r2)
 
     # Plotting 
     iterations_mse_plot(model_optimal.cost_history, "mse_vs_iterations.png")

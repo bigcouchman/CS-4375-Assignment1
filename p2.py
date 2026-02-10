@@ -83,6 +83,7 @@ if __name__ == "__main__":
     model_optimal = None
     params_optimal = None
 
+    # Fine tune paramaters using Regressor
     for i in list_learning_rates:
         for j in list_num_iterations:
             model = SGDRegressor(learning_rate='constant', eta0=i, max_iter=j, random_state=42)

@@ -106,18 +106,21 @@ def plot_mse_vs_iterations(cost_history, filename):
 
 def plot_feature_vs_target(X, y, feature_names, target_name, filename):
     """
-    Plot scatter plots of features vs. target (up to 5 features).
+    Plot scatter plots of all features vs. target.
+    Arranged in 3 rows: 4, 4, 3 columns.
     Saves to plots/ directory.
     """
-    n_features = min(5, X.shape[1])
-    fig, axes = plt.subplots(1, n_features, figsize=(15, 4))
-    if n_features == 1:
-        axes = [axes]
+    n_features = X.shape[1]  # Plot all features
+    fig, axes = plt.subplots(3, 4, figsize=(16, 12))
     for i in range(n_features):
-        axes[i].scatter(X[:, i], y, alpha=0.5)
-        axes[i].set_xlabel(feature_names[i])
-        axes[i].set_ylabel(target_name)
-        axes[i].set_title(f'{feature_names[i]} vs {target_name}')
+        row = i // 4
+        col = i % 4
+        axes[row, col].scatter(X[:, i], y, alpha=0.5)
+        axes[row, col].set_xlabel(feature_names[i])
+        axes[row, col].set_ylabel(target_name)
+        axes[row, col].set_title(f'{feature_names[i]} vs {target_name}')
+    # Hide the unused subplot (12th position)
+    axes[2, 3].set_visible(False)
     plt.tight_layout()
     plt.savefig(f'plots/{filename}')
     plt.close()

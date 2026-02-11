@@ -155,6 +155,6 @@ if __name__ == "__main__":
     print("Test R^2: ", r2)
 
     # Plotting 
-    iterations_mse_plot(model_optimal.cost_history, "mse_vs_iterations.png")
-    features_target_plot(X_train, y_train, features_names, column_target, "features_vs_target.png")
+    iterations_mse_plot(model_optimal.cost_history, "mse_vs_iterations_p1.png")
+    features_target_plot(X_train, y_train, features_names, column_target, "features_vs_target_p1.png")
 

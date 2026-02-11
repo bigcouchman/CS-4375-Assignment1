@@ -26,12 +26,29 @@ def data_preproc(df, column_target):
         label = LabelEncoder()
         X[column] = label.fit_transform(X[column])
 
-    scaler = StandardScaler()
-    scaled_x = scaler.fit_transform(X)
-    return scaled_x, y.values, X.columns
+    return X.values, y.values, X.columns
 
 # Iterations vs MSE plotting
-def iterations_mse_plot(cost_history, filename):
+def iterations_mse_plot(params, X_train, y_train, filename):
+    cost_history = []
+    base_model = SGDRegressor(
+        alpha=params['alpha'],
+        learning_rate=params['learning_rate'],
+        eta0=params['eta0'],
+        max_iter=1,
+        random_state=42,
+        warm_start=True
+    )
+
+    total_iterations = 500
+    for i in range(total_iterations):
+        base_model.partial_fit(X_train, y_train)
+        predict_y = base_model.predict(X_train)
+        cost = mean_squared_error(y_train, predict_y)
+        cost_history.append(cost)
+        if i % 100 == 0:
+            logging.info(f"Iteration {i}, MSE = {cost:.4f}")
+
     plt.figure(figsize=(10, 6))
     plt.plot(range(len(cost_history)), cost_history)
     plt.xlabel('Iteration #')
@@ -43,14 +60,17 @@ def iterations_mse_plot(cost_history, filename):
 # Feature and target plotting
 def features_target_plot(X, y, features_names, target_name, filename):
     num_features = min(5, X.shape[1])
-    figure, axes = plt.subplots(1, num_features, figsize=(15, 4))
+    figure, axes = plt.subplots(3, 4, figsize=(16, 10))
+    axes = axes.flatten()
     if num_features == 1:
         axes = [axes]
-    for i in range(num_features):
-        axes[i].scatter(X[:, i], y, alpha=0.5)
+    for i in range(11):
+        axes[i].scatter(X[:, i], y, s=10)
         axes[i].set_xlabel(features_names[i])
         axes[i].set_ylabel(target_name)
         axes[i].set_title(f'{features_names[i]} vs {target_name}')
+    axes[11].axis('off')
+
     plt.tight_layout()
     plt.savefig(f'plots/{filename}')
     plt.close()
@@ -75,27 +95,33 @@ if __name__ == "__main__":
 
     logging.basicConfig(filename="part2.txt", level=logging.INFO, format="%(message)s")
     
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test)
      # Create a linear regression model with parameter options
-    list_learning_rates = [0.05, 0.01, 0.001]
+    list_learning_rates = ['constant','adaptive','optimal','invscaling']
     list_num_iterations = [500, 1000, 2000]
-
+    list_alphas = [0.0001, 0.001, 0.01]
+    list_eta0s = [0.01, 0.001]
     mse_optimal = float("inf")
     model_optimal = None
     params_optimal = None
 
     # Fine tune paramaters using Regressor
-    for i in list_learning_rates:
-        for j in list_num_iterations:
-            model = SGDRegressor(learning_rate='constant', eta0=i, max_iter=j, random_state=42)
-            model.fit(X_train, y_train)
-            predict_y_train = model.predict(X_train)
-            mse_train = mean_squared_error(y_train, predict_y_train)
+    for k in list_alphas:
+        for i in list_learning_rates:
+            for m in list_eta0s:
+                for j in list_num_iterations:
+                    model = SGDRegressor(alpha = k, learning_rate=i, eta0=m, max_iter=j, random_state=42)
+                    model.fit(X_train, y_train)
+                    predict_y_train = model.predict(X_train)
+                    mse_train = mean_squared_error(y_train, predict_y_train)
 
-            logging.info(f"Learning Rate={i}, Iteration={j}, Training MSE = {mse_train:.4f}")
-            if mse_train < mse_optimal:
-                mse_optimal = mse_train
-                model_optimal = model
-                params_optimal = (i, j)
+                    logging.info(f"Learning Rate={i}, Iteration={j}, Training MSE = {mse_train:.4f}")
+                    if mse_train < mse_optimal:
+                        mse_optimal = mse_train
+                        model_optimal = model
+                        params_optimal = {'alpha': k, 'learning_rate': i, 'eta0': m, 'max_iter':j}
 
     print("Best MSE for training: ", mse_optimal)
     print("Best parameters: ", params_optimal)
@@ -108,5 +134,5 @@ if __name__ == "__main__":
     print("Test MSE: ", mse_test)
     print("Test R^2: ", r2)
 
-    # iterations_mse_plot(model_optimal.cost_history, "mse_vs_iterations_p2.png")
+    iterations_mse_plot(params_optimal, X_train, y_train, "mse_vs_iterations_p2.png")
     features_target_plot(X_train, y_train, features_names, column_target, "features_vs_target_p2.png")

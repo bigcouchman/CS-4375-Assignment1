@@ -83,14 +83,17 @@ def iterations_mse_plot(cost_history, filename):
 # Feature and target plotting
 def features_target_plot(X, y, features_names, target_name, filename):
     num_features = min(5, X.shape[1])
-    figure, axes = plt.subplots(1, num_features, figsize=(15, 4))
+    figure, axes = plt.subplots(3, 4, figsize=(15, 10))
+    axes = axes.flatten()
     if num_features == 1:
         axes = [axes]
-    for i in range(num_features):
-        axes[i].scatter(X[:, i], y, alpha=0.5)
+    for i in range(11):
+        axes[i].scatter(X[:, i], y, s=10)
         axes[i].set_xlabel(features_names[i])
         axes[i].set_ylabel(target_name)
         axes[i].set_title(f'{features_names[i]} vs {target_name}')
+    axes[11].axis('off')
+
     plt.tight_layout()
     plt.savefig(f'plots/{filename}')
     plt.close()

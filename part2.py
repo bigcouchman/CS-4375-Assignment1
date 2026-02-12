@@ -1,3 +1,6 @@
+# CS 4375 Assignment 1 Part 2 By Nguyen Do (NPD220001) and Casey Nguyen (CXN220034)
+
+# Import necessary libraries (run pip install -r requirements.txt for dependencies)
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -9,6 +12,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.linear_model import SGDRegressor
 from ucimlrepo import fetch_ucirepo
 
+# Create directories to store logs and plots
 os.makedirs('logs', exist_ok=True)
 os.makedirs('plots', exist_ok=True)
 
@@ -31,6 +35,7 @@ def data_preproc(df, column_target):
 # Iterations vs MSE plotting
 def iterations_mse_plot(params, X_train, y_train, filename):
     cost_history = []
+    # Create a base regressor model
     base_model = SGDRegressor(
         alpha=params['alpha'],
         learning_rate=params['learning_rate'],
@@ -40,7 +45,8 @@ def iterations_mse_plot(params, X_train, y_train, filename):
         warm_start=True
     )
 
-    total_iterations = 500
+    # Keep track of MSE when called to plot the graph
+    total_iterations = params['max_iter']
     for i in range(total_iterations):
         base_model.partial_fit(X_train, y_train)
         predict_y = base_model.predict(X_train)
@@ -58,6 +64,7 @@ def iterations_mse_plot(params, X_train, y_train, filename):
 # Feature and target plotting
 def features_target_plot(X, y, features_names, target_name, filename):
     num_features = min(5, X.shape[1])
+    # Graph each feature vs its target, totalling to 11 graphs and formatted
     figure, axes = plt.subplots(3, 4, figsize=(16, 10))
     axes = axes.flatten()
     if num_features == 1:
@@ -87,15 +94,17 @@ if __name__ == "__main__":
     print("Loaded dataset.")
     print(df.head())
 
-    # Data preprocessing and training/test split
+    # Data preprocessing and training/test split (80/20)
     X, y, features_names = data_preproc(df, column_target)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     logging.basicConfig(filename="logs/part2.txt", filemode= 'w', level=logging.INFO, format="%(message)s")
     
+    # Scale dataset to avoid leakage
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
+
      # Create a linear regression model with parameter options
     list_learning_rates = ['constant','adaptive','optimal','invscaling']
     list_num_iterations = [500, 1000, 2000]
@@ -105,7 +114,7 @@ if __name__ == "__main__":
     model_optimal = None
     params_optimal = None
 
-    # Fine tune paramaters using Regressor
+    # Fine tune paramaters using Regressor, finding the best combinations of parameters resulting in lowest MSE
     for k in list_alphas:
         for i in list_learning_rates:
             for m in list_eta0s:
@@ -115,13 +124,14 @@ if __name__ == "__main__":
                     predict_y_train = model.predict(X_train)
                     mse_train = mean_squared_error(y_train, predict_y_train)
 
-                    logging.info(f"Learning Rate={i}, Iteration={j}, Training MSE = {mse_train:.4f}")
+                    # Continuously train the model and log parameters
+                    logging.info(f"Iteration = {j}: Learning Rate = {i}, Training MSE = {mse_train:.4f}")
                     if mse_train < mse_optimal:
                         mse_optimal = mse_train
                         model_optimal = model
-                        params_optimal = {'alpha': k, 'learning_rate': i, 'eta0': m, 'max_iter':j}
+                        params_optimal = {'alpha': k, 'learning_rate': i, 'eta0': m, 'max_iter': j}
 
-    # Model evaluation on test data
+    # Model evaluation on train, test data, and performance metrics
     predict_train = model_optimal.predict(X_train)
     mse_train = mean_squared_error(y_train, predict_train)
     predict_test = model_optimal.predict(X_test)
@@ -129,6 +139,7 @@ if __name__ == "__main__":
     r2 = r2_score(y_test, predict_test)
     exp_var = explained_variance_score(y_test, predict_test)
 
+    # Print out model evaluation and metrics
     print("Best parameters: ", params_optimal)
     print("Train MSE: ", mse_optimal)
     print("Test MSE: ", mse_test)
@@ -137,6 +148,7 @@ if __name__ == "__main__":
     print("Bias: ", model_optimal.intercept_)
     print("Weights: ", model_optimal.coef_)
 
+    # Log parameters, metrics, and call plotting functions (at the end)
     logging.info(f"Best parameters: {params_optimal}")
     logging.info(f"Explained variance: {exp_var:.4f}, Bias: {model_optimal.intercept_}")
     logging.info(f"Weights: {model_optimal.coef_}")

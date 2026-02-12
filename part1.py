@@ -1,3 +1,6 @@
+# CS 4375 Assignment 1 Part 2 By Nguyen Do (NPD220001) and Casey Nguyen (CXN220034)
+
+# Import necessary libraries (run pip install -r requirements.txt for dependencies)
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -13,7 +16,7 @@ os.makedirs('logs', exist_ok=True)
 os.makedirs('plots', exist_ok=True)
 logging.basicConfig(filename="logs/part1.txt", filemode='w', level=logging.INFO, format="%(message)s")
 
-# Linear regression model
+# Linear regression model custom
 class LinearReg:
     def __init__(self, learning_rate=0.01, num_iterations=1000):
         self.learning_rate = learning_rate
@@ -50,7 +53,6 @@ class LinearReg:
 
 # Data Preprocessing
 def data_preproc(df, column_target):
-
     # Drop nulls and duplicates, separate features and targets
     df = df.dropna()
     df = df.drop_duplicates()
@@ -128,7 +130,7 @@ if __name__ == "__main__":
     model_optimal = None
     params_optimal = None
 
-    # Tune parameters to find the best model (I am not sure if i do this right pls reivew)
+    # Tune parameters to find the best model, log them to track training MSE going down.
     for i in list_learning_rates:
         for j in list_num_iterations:
             model = LinearReg(learning_rate=i, num_iterations=j)
@@ -136,13 +138,13 @@ if __name__ == "__main__":
 
             predict_train = model.predict(X_train)
             mse_train = model.mse(y_train, predict_train)
-            logging.info(f"Iterations = {j}: Learning Rate = {i}, Train MSE = {mse_train:.4f}")
+            logging.info(f"Iterations = {j}: Learning Rate = {i}, Training MSE = {mse_train:.4f}")
             if mse_train < mse_optimal:
                 mse_optimal = mse_train
                 model_optimal = model
                 params_optimal = (i, j)
     
-    # Model evaluation on test data
+    # Model evaluation on training, and test data, and performance metrics
     predict_train = model_optimal.predict(X_train)
     mse_train = mean_squared_error(y_train, predict_train)
     predict_test = model_optimal.predict(X_test)
@@ -159,10 +161,12 @@ if __name__ == "__main__":
     print("Bias: ", model_optimal.bias)
     print("Weights: ", model_optimal.weights)
 
+    # Log performance metrics
     logging.info(f"Best parameters: {params_optimal}")
     logging.info(f"Explained variance: {exp_var:.4f}, Bias: {model_optimal.bias}")
+    logging.info(f"Weights: {model_optimal.weights}")
     
-    # Plotting 
+    # Plotting function calls
     iterations_mse_plot(model_optimal.cost_history, "mse_vs_iterations_p1.png")
     features_target_plot(X_train, y_train, features_names, column_target, "features_vs_target_p1.png")
 

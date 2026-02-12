@@ -130,9 +130,13 @@ if __name__ == "__main__":
     predict_test = model_optimal.predict(X_test)
     mse_test = mean_squared_error(y_test, predict_test)
     r2 = r2_score(y_test, predict_test)
+    exp_var = explained_variance_score(y_test, predict_test)
 
     print("Test MSE: ", mse_test)
     print("Test R^2: ", r2)
+
+    logging.info(f"Best parameters: {params_optimal}")
+    logging.info(f"Explained variance: {exp_var:.4f}, Bias: {model_optimal.intercept_}")
 
     iterations_mse_plot(params_optimal, X_train, y_train, "mse_vs_iterations_p2.png")
     features_target_plot(X_train, y_train, features_names, column_target, "features_vs_target_p2.png")

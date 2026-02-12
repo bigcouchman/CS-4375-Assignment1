@@ -11,7 +11,7 @@ from ucimlrepo import fetch_ucirepo
 # Keep track of logs and plots
 os.makedirs('logs', exist_ok=True)
 os.makedirs('plots', exist_ok=True)
-logging.basicConfig(filename="logs/part1.txt", level=logging.INFO, format="%(message)s")
+logging.basicConfig(filename="logs/part1.txt", filemode='w', level=logging.INFO, format="%(message)s")
 
 # Linear regression model
 class LinearReg:
@@ -41,10 +41,6 @@ class LinearReg:
             # Update parameters
             self.weights = self.weights - (self.learning_rate * d_weights)
             self.bias = self.bias - (self.learning_rate * d_bias)
-
-            # For every 100 iterations, log MSE
-            if i % 100 == 0:
-                logging.info(f"Iteration {i}: MSE = {cost:.4f}")
     
     # Find predicted output values using weights and MSE
     def predict(self, X):
@@ -66,9 +62,7 @@ def data_preproc(df, column_target):
         label = LabelEncoder()
         X[column] = label.fit_transform(X[column])
 
-    scaler = StandardScaler()
-    scaled_x = scaler.fit_transform(X)
-    return scaled_x, y.values, X.columns
+    return X.values, y.values, X.columns
 
 # Iterations vs MSE plotting
 def iterations_mse_plot(cost_history, filename):
@@ -117,6 +111,11 @@ if __name__ == "__main__":
     X, y, features_names = data_preproc(df, column_target)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
+
+    scaler = StandardScaler()
+    X_train = scaler.fit_transform(X_train)
+    X_test = scaler.transform(X_test)
+
     print("Completed data preprocessing.")
     print(f"Training data: {X_train.shape[0]}")
     print(f"Test data: {X_test.shape[0]}")
@@ -137,24 +136,27 @@ if __name__ == "__main__":
 
             predict_train = model.predict(X_train)
             mse_train = model.mse(y_train, predict_train)
-            logging.info(f"Learning Rate = {i}, Iterations = {j}, Train MSE = {mse_train:.4f}")
+            logging.info(f"Iterations = {j}: Learning Rate = {i}, Train MSE = {mse_train:.4f}")
             if mse_train < mse_optimal:
                 mse_optimal = mse_train
                 model_optimal = model
                 params_optimal = (i, j)
     
-    print("Best MSE for training: ", mse_optimal)
-    print("Best parameters: ", params_optimal)
-
-
     # Model evaluation on test data
+    predict_train = model_optimal.predict(X_train)
+    mse_train = mean_squared_error(y_train, predict_train)
     predict_test = model_optimal.predict(X_test)
     mse_test = mean_squared_error(y_test, predict_test)
     exp_var = explained_variance_score(y_test, predict_test)
     r2 = r2_score(y_test, predict_test)
 
+    print("Train MSE: ", mse_train)
+    print("Best parameters: ", params_optimal)
     print("Test MSE: ", mse_test)
     print("Test R^2: ", r2)
+    print("Explained Variance: ", exp_var)
+    print("Bias: ", model_optimal.bias)
+    print("Weights: ", model_optimal.weights)
 
     logging.info(f"Best parameters: {params_optimal}")
     logging.info(f"Explained variance: {exp_var:.4f}, Bias: {model_optimal.bias}")

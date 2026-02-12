@@ -46,8 +46,6 @@ def iterations_mse_plot(params, X_train, y_train, filename):
         predict_y = base_model.predict(X_train)
         cost = mean_squared_error(y_train, predict_y)
         cost_history.append(cost)
-        if i % 100 == 0:
-            logging.info(f"Iteration {i}, MSE = {cost:.4f}")
 
     plt.figure(figsize=(10, 6))
     plt.plot(range(len(cost_history)), cost_history)
@@ -93,7 +91,7 @@ if __name__ == "__main__":
     X, y, features_names = data_preproc(df, column_target)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-    logging.basicConfig(filename="logs/part2.txt", level=logging.INFO, format="%(message)s")
+    logging.basicConfig(filename="logs/part2.txt", filemode= 'w', level=logging.INFO, format="%(message)s")
     
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
@@ -123,7 +121,7 @@ if __name__ == "__main__":
                         model_optimal = model
                         params_optimal = {'alpha': k, 'learning_rate': i, 'eta0': m, 'max_iter':j}
 
-    print("Best MSE for training: ", mse_optimal)
+    print("Train MSE: ", mse_optimal)
     print("Best parameters: ", params_optimal)
 
     # Model evaluation on test data
@@ -137,6 +135,7 @@ if __name__ == "__main__":
 
     logging.info(f"Best parameters: {params_optimal}")
     logging.info(f"Explained variance: {exp_var:.4f}, Bias: {model_optimal.intercept_}")
+    logging.info(f"Weights: {model_optimal.coef_}")
 
     iterations_mse_plot(params_optimal, X_train, y_train, "mse_vs_iterations_p2.png")
     features_target_plot(X_train, y_train, features_names, column_target, "features_vs_target_p2.png")

@@ -11,7 +11,7 @@ from ucimlrepo import fetch_ucirepo
 # Keep track of logs and plots
 os.makedirs('logs', exist_ok=True)
 os.makedirs('plots', exist_ok=True)
-logging.basicConfig(filename="part1.txt", level=logging.INFO, format="%(message)s")
+logging.basicConfig(filename="logs/part1.txt", level=logging.INFO, format="%(message)s")
 
 # Linear regression model
 class LinearReg:

@@ -1,9 +1,0 @@
-Learning Rate = 0.05, Iterations = 500, Train MSE = 0.5428886730381429
-Learning Rate = 0.05, Iterations = 1000, Train MSE = 0.542777174486679
-Learning Rate = 0.05, Iterations = 2000, Train MSE = 0.5427474812382665
-Learning Rate = 0.01, Iterations = 500, Train MSE = 0.546201230574309
-Learning Rate = 0.01, Iterations = 1000, Train MSE = 0.5431521896538174
-Learning Rate = 0.01, Iterations = 2000, Train MSE = 0.5429396469686872
-Learning Rate = 0.001, Iterations = 500, Train MSE = 12.932384271366503
-Learning Rate = 0.001, Iterations = 1000, Train MSE = 5.114388266742288
-Learning Rate = 0.001, Iterations = 2000, Train MSE = 1.1730394307816248

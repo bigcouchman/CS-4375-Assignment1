@@ -121,17 +121,21 @@ if __name__ == "__main__":
                         model_optimal = model
                         params_optimal = {'alpha': k, 'learning_rate': i, 'eta0': m, 'max_iter':j}
 
-    print("Train MSE: ", mse_optimal)
-    print("Best parameters: ", params_optimal)
-
     # Model evaluation on test data
+    predict_train = model_optimal.predict(X_train)
+    mse_train = mean_squared_error(y_train, predict_train)
     predict_test = model_optimal.predict(X_test)
     mse_test = mean_squared_error(y_test, predict_test)
     r2 = r2_score(y_test, predict_test)
     exp_var = explained_variance_score(y_test, predict_test)
 
+    print("Best parameters: ", params_optimal)
+    print("Train MSE: ", mse_optimal)
     print("Test MSE: ", mse_test)
     print("Test R^2: ", r2)
+    print("Explained Variance: ", exp_var)
+    print("Bias: ", model_optimal.intercept_)
+    print("Weights: ", model_optimal.coef_)
 
     logging.info(f"Best parameters: {params_optimal}")
     logging.info(f"Explained variance: {exp_var:.4f}, Bias: {model_optimal.intercept_}")

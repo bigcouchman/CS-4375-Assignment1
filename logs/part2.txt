@@ -74,8 +74,3 @@ Best parameters: {'alpha': 0.0001, 'learning_rate': 'adaptive', 'eta0': 0.01, 'm
 Explained variance: 0.3213, Bias: [5.78717167]
 Weights: [ 0.0743224  -0.1925495   0.02211341  0.16721579 -0.02562908  0.12492398
  -0.15111438 -0.17186991  0.08507857  0.12545151  0.31213117]
-Iteration 0, MSE = 0.5618
-Iteration 100, MSE = 0.5609
-Iteration 200, MSE = 0.5609
-Iteration 300, MSE = 0.5609
-Iteration 400, MSE = 0.5609

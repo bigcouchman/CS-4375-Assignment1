@@ -150,8 +150,9 @@ if __name__ == "__main__":
     exp_var = explained_variance_score(y_test, predict_test)
     r2 = r2_score(y_test, predict_test)
 
-    print("Train MSE: ", mse_train)
+    # Print model evaluation metrics
     print("Best parameters: ", params_optimal)
+    print("Train MSE: ", mse_train)
     print("Test MSE: ", mse_test)
     print("Test R^2: ", r2)
     print("Explained Variance: ", exp_var)

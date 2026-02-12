@@ -73,7 +73,7 @@ class LinearRegressionGD:
 def preprocess_data(df, target_col):
     """
     Pre-process the dataset: clean, encode.
-    Note: Scaling is done separately after splitting to avoid data leakage.
+    Scaling is done separately after splitting to avoid data leakage.
     Returns cleaned X, y array, and feature names.
     """
     # Remove null/NA values and duplicates
@@ -94,7 +94,6 @@ def preprocess_data(df, target_col):
 def plot_mse_vs_iterations(cost_history, filename):
     """
     Plot MSE vs. iterations to visualize convergence.
-    Saves to plots/ directory.
     """
     plt.figure(figsize=(10, 6))
     plt.plot(range(len(cost_history)), cost_history)
@@ -107,8 +106,6 @@ def plot_mse_vs_iterations(cost_history, filename):
 def plot_feature_vs_target(X, y, feature_names, target_name, filename):
     """
     Plot scatter plots of all features vs. target.
-    Arranged in 3 rows: 4, 4, 3 columns.
-    Saves to plots/ directory.
     """
     n_features = X.shape[1]  # Plot all features
     fig, axes = plt.subplots(3, 4, figsize=(16, 12))
@@ -119,7 +116,6 @@ def plot_feature_vs_target(X, y, feature_names, target_name, filename):
         axes[row, col].set_xlabel(feature_names[i])
         axes[row, col].set_ylabel(target_name)
         axes[row, col].set_title(f'{feature_names[i]} vs {target_name}')
-    # Hide the unused subplot (12th position)
     axes[2, 3].set_visible(False)
     plt.tight_layout()
     plt.savefig(f'plots/{filename}')
@@ -139,10 +135,9 @@ if __name__ == "__main__":
     X, y, feature_names = preprocess_data(df, target_col)
     print("Pre-processing complete.")
 
-    # 3. Split into train/val/test (60/20/20) to avoid tuning on test set
-    # ML best practice: Train for learning, Val for tuning, Test for final eval
-    X_temp, X_test, y_temp, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
-    X_train, X_val, y_train, y_val = train_test_split(X_temp, y_temp, test_size=0.25, random_state=42)  # 0.25 of temp = 20% of total
+    # 3. Split into train/val/test (80/10/10)
+    X_train, X_temp, y_train, y_temp = train_test_split(X, y, test_size=0.2, random_state=42)
+    X_val, X_test, y_val, y_test = train_test_split(X_temp, y_temp, test_size=0.5, random_state=42)
     print(f"Train shape: {X_train.shape}, Val shape: {X_val.shape}, Test shape: {X_test.shape}")
 
     # 4. Scale features: Fit scaler ONLY on train to avoid data leakage
@@ -151,7 +146,7 @@ if __name__ == "__main__":
     X_val_scaled = scaler.transform(X_val)
     X_test_scaled = scaler.transform(X_test)
 
-    # 5. Tune parameters on validation set (not test)
+    # 5. Tune parameters: learning rate and iterations on validation set
     learning_rates = [0.05, 0.01, 0.001]
     n_iterations_list = [500, 1000, 2000]
     best_mse = float('inf')
@@ -172,23 +167,25 @@ if __name__ == "__main__":
 
     print(f"Best params: {best_params}, Best Val MSE: {best_mse:.4f}")
 
-    # 6. Evaluate best model on test (final, untouched evaluation)
+    # 6. Evaluate best model on test
     y_pred_train = best_model.predict(X_train_scaled)
+    y_pred_val = best_model.predict(X_val_scaled)
     y_pred_test = best_model.predict(X_test_scaled)
     train_mse = best_model.mse(y_train, y_pred_train)
+    val_mse = best_mse
     test_mse = best_model.mse(y_test, y_pred_test)
     r2 = r2_score(y_test, y_pred_test)
     explained_var = explained_variance_score(y_test, y_pred_test)
 
     logging.info(f"Best Params: {best_params}")
-    logging.info(f"Train MSE: {train_mse:.4f}, Test MSE: {test_mse:.4f}, R2: {r2:.4f}, Explained Variance: {explained_var:.4f}")
+    logging.info(f"Train MSE: {train_mse:.4f}, Val MSE: {val_mse:.4f}, Test MSE: {test_mse:.4f}, R2: {r2:.4f}, Explained Variance: {explained_var:.4f}")
     logging.info(f"Weights: {best_model.weights}, Bias: {best_model.bias}")
 
-    print(f"Final - Train MSE: {train_mse:.4f}, Test MSE: {test_mse:.4f}, R2: {r2:.4f}")
+    print(f"Final - Train MSE: {train_mse:.4f}, Val MSE: {val_mse:.4f}, Test MSE: {test_mse:.4f}, R2: {r2:.4f}")
 
     # 7. Plots
     plot_mse_vs_iterations(best_model.cost_history, f'part1_trial{trial_num}_mse_vs_iterations.png')
     plot_feature_vs_target(X_test_scaled, y_test, feature_names, target_col, f'part1_trial{trial_num}_feature_vs_target.png')
 
     # Answer question
-    logging.info("Are you satisfied with the best solution? Yes, the model converged (MSE decreases over iterations), and test MSE is reasonable with good R2. Tuning on validation set ensures no data leakage.")
+    logging.info("Are you satisfied with the best solution? Yes, the model converged (MSE decreases over iterations), and test MSE is reasonable with good R2.")

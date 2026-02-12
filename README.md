@@ -47,7 +47,7 @@ Both scripts will:
 - **No Hardcoded Paths**: All paths are relative
 - **Public Data**: Dataset fetched from UCI - no local files to submit
 - **Trial Versioning**: Each run creates new log/plot files (preserves history)
-- **ML Best Practices**: Proper train/val/test splits, no data leakage
+- **ML Best Practices**: 80/10/10 train/val/test splits, no data leakage
 
 ### Libraries Used (Part 2)
 - `sklearn.linear_model.SGDRegressor`: Stochastic Gradient Descent for linear regression

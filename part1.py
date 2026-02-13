@@ -1,4 +1,6 @@
-# CS 4375 Assignment 1 Part 2 By Nguyen Do (NPD220001) and Casey Nguyen (CXN220034)
+# CS 4375 Assignment 1 Part 1 By Nguyen Do (NPD220001) and Casey Nguyen (CXN220034)
+# This assignment is an implementation of linear regression using gradient descent
+# on UCI wine quality dataset. Question answered in report.md
 
 # Import necessary libraries (run pip install -r requirements.txt for dependencies)
 import numpy as np
@@ -11,65 +13,63 @@ from sklearn.metrics import mean_squared_error, r2_score, explained_variance_sco
 from sklearn.model_selection import train_test_split
 from ucimlrepo import fetch_ucirepo
 
-# Keep track of logs and plots
+# Create directories to store logs and plots
 os.makedirs('logs', exist_ok=True)
 os.makedirs('plots', exist_ok=True)
 logging.basicConfig(filename="logs/part1.txt", filemode='w', level=logging.INFO, format="%(message)s")
 
-# Linear regression model custom
-class LinearReg:
+# Custom linear regression model 
+class LinReg:
+    # Create model
     def __init__(self, learning_rate=0.01, num_iterations=1000):
         self.learning_rate = learning_rate
         self.num_iterations = num_iterations
         self.weights = None
         self.bias = None
-        self.cost_history = [] # Store MSE per iteration
+        self.cost_list = [] # Store MSE per iteration
     
     # Gradient descent function
-    def fit(self, X, y):
+    def grad_desc(self, X, y):
         num_samples, num_features = X.shape
         self.weights = np.zeros(num_features)
         self.bias = 0
         for i in range(self.num_iterations):
 
-            # Find predictions
-            predict_y = np.dot(X, self.weights) + self.bias
-            cost = self.mse(y, predict_y)
-            self.cost_history.append(cost)
+            # Predictions, weights and bias
+            y_predict = np.dot(X, self.weights) + self.bias
+            cost = self.find_mse(y, y_predict)
+            self.cost_list.append(cost)
 
-            # Find gradients
-            d_weights = (1/num_samples) * np.dot(X.T, (predict_y - y))
-            d_bias = (1/num_samples) * np.sum(predict_y - y)
-
-            # Update parameters
-            self.weights = self.weights - (self.learning_rate * d_weights)
-            self.bias = self.bias - (self.learning_rate * d_bias)
+            grad_weights = (1/num_samples) * np.dot(X.T, (y_predict - y))
+            grad_bias = (1/num_samples) * np.sum(y_predict - y)
+            self.weights = self.weights - (self.learning_rate * grad_weights)
+            self.bias = self.bias - (self.learning_rate * grad_bias)
     
-    # Find predicted output values using weights and MSE
-    def predict(self, X):
+    # Predict output and fine MSE
+    def find_predict(self, X):
         return np.dot(X, self.weights) + self.bias
-    def mse(self, actual_y, predict_y):
-        return np.mean((actual_y - predict_y) ** 2)
+    def find_mse(self, y_actual, y_predict):
+        return np.mean((y_actual - y_predict) ** 2)
 
 # Data Preprocessing
 def data_preproc(df, column_target):
-    # Drop nulls and duplicates, separate features and targets
+    # Drop nulls and duplicates and separate features and targets
     df = df.dropna()
     df = df.drop_duplicates()
     X = df.drop(columns = [column_target])
     y = df[column_target]
 
-    # Label encoding to encode columns
-    for column in X.select_dtypes(include=['object']).columns:
+    # Label encoding to encode columns and return features and targets items
+    for c in X.select_dtypes(include=['object']).columns:
         label = LabelEncoder()
-        X[column] = label.fit_transform(X[column])
+        X[c] = label.fit_transform(X[c])
 
     return X.values, y.values, X.columns
 
 # Iterations vs MSE plotting
-def iterations_mse_plot(cost_history, filename):
+def iterations_mse_plot(cost_list, filename):
     plt.figure(figsize=(10, 6))
-    plt.plot(range(len(cost_history)), cost_history)
+    plt.plot(range(len(cost_list)), cost_list)
     plt.xlabel('Iteration #')
     plt.ylabel('MSE')
     plt.title('Iteration # vs MSE Plot')
@@ -79,11 +79,14 @@ def iterations_mse_plot(cost_history, filename):
 # Feature and target plotting
 def features_target_plot(X, y, features_names, target_name, filename):
     num_features = min(5, X.shape[1])
+    # Graph each feature vs its target, totalling to 11 graphs and formatted
     figure, axes = plt.subplots(3, 4, figsize=(15, 10))
     axes = axes.flatten()
+
+    # Build graph layout (3 rows, each with 4 graphs, 11 graphs total)
     if num_features == 1:
         axes = [axes]
-    for i in range(11):
+    for i in range(min(11, X.shape[1])):
         axes[i].scatter(X[:, i], y, s=10)
         axes[i].set_xlabel(features_names[i])
         axes[i].set_ylabel(target_name)
@@ -96,77 +99,65 @@ def features_target_plot(X, y, features_names, target_name, filename):
 
 # Main function
 if __name__ == "__main__":
-    # Get Wine Quality dataset from UCI
+    # Get Wine Quality dataset from UCI, geat features and targets
     wines = fetch_ucirepo(id=186)
+    column_target = wines.data.targets.columns[0]
+    df = pd.concat([wines.data.features, wines.data.targets], axis = 1)
 
-    x_frame = wines.data.features
-    y_frame = wines.data.targets
-
-    # Form dataframe with features and target
-    column_target = y_frame.columns[0]
-    df = pd.concat([x_frame, y_frame], axis = 1)
-
-    print("Loaded dataset.")
-    print(df.head())
-
-    # Data preprocessing and training/test split
+    # Data preprocessing and training/test split (80/20)
     X, y, features_names = data_preproc(df, column_target)
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
     
-
+    # Scale dataset to avoid leakage
     scaler = StandardScaler()
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
 
-    print("Completed data preprocessing.")
-    print(f"Training data: {X_train.shape[0]}")
-    print(f"Test data: {X_test.shape[0]}")
-
     # Create a linear regression model with parameter options
     list_learning_rates = [0.05, 0.01, 0.001]
     list_num_iterations = [500, 1000, 2000]
-
     mse_optimal = float("inf")
     model_optimal = None
     params_optimal = None
 
-    # Tune parameters to find the best model, log them to track training MSE going down.
+    # Fine tune parameters and find the best combinations of parameters
     for i in list_learning_rates:
         for j in list_num_iterations:
-            model = LinearReg(learning_rate=i, num_iterations=j)
-            model.fit(X_train, y_train)
+            model = LinReg(learning_rate=i, num_iterations=j)
+            model.grad_desc(X_train, y_train)
+            train_y_predict = model.find_predict(X_train)
+            mse_train = model.find_mse(y_train, train_y_predict)
 
-            predict_train = model.predict(X_train)
-            mse_train = model.mse(y_train, predict_train)
+            # Continuously train the model and log parameters
+            # If optimal parameters are found, make the model to the best model and keep replacing if needed
             logging.info(f"Iterations = {j}: Learning Rate = {i}, Training MSE = {mse_train:.4f}")
             if mse_train < mse_optimal:
                 mse_optimal = mse_train
                 model_optimal = model
                 params_optimal = (i, j)
     
-    # Model evaluation on training, and test data, and performance metrics
-    predict_train = model_optimal.predict(X_train)
-    mse_train = mean_squared_error(y_train, predict_train)
-    predict_test = model_optimal.predict(X_test)
-    mse_test = mean_squared_error(y_test, predict_test)
-    exp_var = explained_variance_score(y_test, predict_test)
-    r2 = r2_score(y_test, predict_test)
-
-    # Print model evaluation metrics
-    print("Best parameters: ", params_optimal)
+    # Model evaluation on training and test data, and performance metrics (I use test data)
+    train_predict = model_optimal.find_predict(X_train)
+    mse_train = mean_squared_error(y_train, train_predict)
+    test_predict = model_optimal.find_predict(X_test)
+    mse_test = mean_squared_error(y_test, test_predict)
+    r2 = r2_score(y_test, test_predict)
+    exp_var = explained_variance_score(y_test, test_predict)
+    
+    # Print evaluation and metrics
+    print("Best parameters (Learning rate, Iterations): ", params_optimal)
     print("Train MSE: ", mse_train)
     print("Test MSE: ", mse_test)
-    print("Test R^2: ", r2)
+    print("R^2: ", r2)
     print("Explained Variance: ", exp_var)
     print("Bias: ", model_optimal.bias)
     print("Weights: ", model_optimal.weights)
 
-    # Log performance metrics
+    # Log metrics, parameters, and call plotting functions (at the end)
     logging.info(f"Best parameters: {params_optimal}")
     logging.info(f"Explained variance: {exp_var:.4f}, Bias: {model_optimal.bias}")
     logging.info(f"Weights: {model_optimal.weights}")
     
-    # Plotting function calls
-    iterations_mse_plot(model_optimal.cost_history, "mse_vs_iterations_p1.png")
+    iterations_mse_plot(model_optimal.cost_list, "mse_vs_iterations_p1.png")
     features_target_plot(X_train, y_train, features_names, column_target, "features_vs_target_p1.png")
 

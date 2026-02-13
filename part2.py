@@ -1,4 +1,6 @@
 # CS 4375 Assignment 1 Part 2 By Nguyen Do (NPD220001) and Casey Nguyen (CXN220034)
+# This assignment is an implementation of linear regression using gradient descent
+# on an UCI Wine quality dataset.
 
 # Import necessary libraries (run pip install -r requirements.txt for dependencies)
 import numpy as np
@@ -25,7 +27,7 @@ def data_preproc(df, column_target):
     X = df.drop(columns = [column_target])
     y = df[column_target]
 
-    # Label encoding to encode columns
+    # Label encoding to encode columns, return features and targets items
     for column in X.select_dtypes(include=['object']).columns:
         label = LabelEncoder()
         X[column] = label.fit_transform(X[column])
@@ -46,6 +48,7 @@ def iterations_mse_plot(params, X_train, y_train, filename):
     )
 
     # Keep track of MSE when called to plot the graph
+    # This reflects to test data reasonably
     total_iterations = params['max_iter']
     for i in range(total_iterations):
         base_model.partial_fit(X_train, y_train)
@@ -53,6 +56,7 @@ def iterations_mse_plot(params, X_train, y_train, filename):
         cost = mean_squared_error(y_train, predict_y)
         cost_history.append(cost)
 
+    # Graph configuration
     plt.figure(figsize=(10, 6))
     plt.plot(range(len(cost_history)), cost_history)
     plt.xlabel('Iteration #')
@@ -67,9 +71,11 @@ def features_target_plot(X, y, features_names, target_name, filename):
     # Graph each feature vs its target, totalling to 11 graphs and formatted
     figure, axes = plt.subplots(3, 4, figsize=(16, 10))
     axes = axes.flatten()
+
+    # Build graph layout (3 rows, each with 4 graphs, 11 graphs total)
     if num_features == 1:
         axes = [axes]
-    for i in range(11):
+    for i in range(min(11, X.shape[1])):
         axes[i].scatter(X[:, i], y, s=10)
         axes[i].set_xlabel(features_names[i])
         axes[i].set_ylabel(target_name)
@@ -81,7 +87,7 @@ def features_target_plot(X, y, features_names, target_name, filename):
     plt.close()
 
 if __name__ == "__main__":
-    # Get Wine Quality dataset from UCI
+    # Get Wine Quality dataset from UCI, get features and targets
     wines = fetch_ucirepo(id=186)
 
     x_frame = wines.data.features
@@ -90,9 +96,6 @@ if __name__ == "__main__":
     # Form dataframe with features and target
     column_target = y_frame.columns[0]
     df = pd.concat([x_frame, y_frame], axis = 1)
-
-    print("Loaded dataset.")
-    print(df.head())
 
     # Data preprocessing and training/test split (80/20)
     X, y, features_names = data_preproc(df, column_target)
@@ -105,7 +108,7 @@ if __name__ == "__main__":
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
 
-     # Create a linear regression model with parameter options
+    # Create a linear regression model with parameter options
     list_learning_rates = ['constant','adaptive','optimal','invscaling']
     list_num_iterations = [500, 1000, 2000]
     list_alphas = [0.0001, 0.001, 0.01]
@@ -115,35 +118,36 @@ if __name__ == "__main__":
     params_optimal = None
 
     # Fine tune paramaters using Regressor, finding the best combinations of parameters resulting in lowest MSE
-    for k in list_alphas:
-        for i in list_learning_rates:
-            for m in list_eta0s:
-                for j in list_num_iterations:
-                    model = SGDRegressor(alpha = k, learning_rate=i, eta0=m, max_iter=j, random_state=42)
+    for i in list_alphas:
+        for j in list_learning_rates:
+            for k in list_eta0s:
+                for m in list_num_iterations:
+                    model = SGDRegressor(alpha = i, learning_rate=j, eta0=k, max_iter=m, random_state=42)
                     model.fit(X_train, y_train)
-                    predict_y_train = model.predict(X_train)
-                    mse_train = mean_squared_error(y_train, predict_y_train)
+                    train_y_predict = model.predict(X_train)
+                    mse_train = mean_squared_error(y_train, train_y_predict)
 
                     # Continuously train the model and log parameters
-                    logging.info(f"Iteration = {j}: Learning Rate = {i}, Training MSE = {mse_train:.4f}")
+                    # If optimal parameters are found, make the model to the best model and keep replacing if needed
+                    logging.info(f"Iteration = {m}: alpha: {i}, Learning Rate = {j}, eta0 = {k}, Training MSE = {mse_train:.4f}")
                     if mse_train < mse_optimal:
                         mse_optimal = mse_train
                         model_optimal = model
-                        params_optimal = {'alpha': k, 'learning_rate': i, 'eta0': m, 'max_iter': j}
+                        params_optimal = {'alpha': i, 'learning_rate': j, 'eta0': k, 'max_iter': m}
 
     # Model evaluation on train, test data, and performance metrics
-    predict_train = model_optimal.predict(X_train)
-    mse_train = mean_squared_error(y_train, predict_train)
-    predict_test = model_optimal.predict(X_test)
-    mse_test = mean_squared_error(y_test, predict_test)
-    r2 = r2_score(y_test, predict_test)
-    exp_var = explained_variance_score(y_test, predict_test)
+    train_predict = model_optimal.predict(X_train)
+    mse_train = mean_squared_error(y_train, train_predict)
+    test_predict = model_optimal.predict(X_test)
+    mse_test = mean_squared_error(y_test, test_predict)
+    r2 = r2_score(y_test, test_predict)
+    exp_var = explained_variance_score(y_test, test_predict)
 
     # Print out model evaluation and metrics
     print("Best parameters: ", params_optimal)
     print("Train MSE: ", mse_optimal)
     print("Test MSE: ", mse_test)
-    print("Test R^2: ", r2)
+    print("R^2: ", r2)
     print("Explained Variance: ", exp_var)
     print("Bias: ", model_optimal.intercept_)
     print("Weights: ", model_optimal.coef_)

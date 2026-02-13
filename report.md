@@ -22,7 +22,7 @@
         <li>Number of Iterations: [500, 1000, 2000]</li>
       </ul>
     </li>
-    <li>Logs: Review part1.txt to keep track of learning rates, number of iterations, and MSE</li>
+    <li>Logs: Review logs/part1.txt to keep track of learning rates, number of iterations, and MSE</li>
     <li>Plots: Review plots/mse_vs_iteration_p1.png and plots/features_vs_target_p1.png for MSE and feature trends</li>
   </ul>
   <h3>Results</h3>
@@ -61,7 +61,7 @@
         <li>Number of Iterations: [500, 1000, 2000]</li>
       </ul>
     </li>
-    <li>Logs: Review part2.txt to keep track of learning rates, number of iterations, and MSE</li>
+    <li>Logs: Review logs/part2.txt to keep track of learning rates, number of iterations, and MSE</li>
     <li>Plots: Review plots/mse_vs_iteration_p2.png and plots/features_vs_target_p2.png for MSE and feature trends</li>
   </ul>
   <h3>Results</h3>

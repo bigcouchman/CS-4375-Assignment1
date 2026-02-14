@@ -41,6 +41,7 @@
 <ul>
   <li>logs/: Track training data and metrics for Part 1 and Part 2</li>
   <li>plots/: Track MSE vs iterations and features vs target graphs for Part 1 and Part 2</li>
+  <li>CS4375_CoverPage.docx: Cover page of the assignment</li>
   <li>part1.py: Code for Part 1</li>
   <li>part2.py: Code for Part 2</li>
   <li>README.md: Set up instructions for program</li>

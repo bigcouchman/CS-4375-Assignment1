@@ -96,7 +96,7 @@ if __name__ == "__main__":
     X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
     # Every time you run the code, a new log file and plots are created with trial numbers :)
-    track_log = [f for f in os.listdir('logs') if f.startswith('part1') and f.endswith('.txt')]
+    track_log = [f for f in os.listdir('logs') if f.startswith('part2_trial') and f.endswith('.txt')]
     iteration_num = len(track_log) + 1
     logging.basicConfig(filename=f"logs/part2_trial{iteration_num}.txt", level=logging.INFO, format="%(message)s")
     

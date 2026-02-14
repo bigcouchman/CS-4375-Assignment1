@@ -6,6 +6,7 @@
     <li>Dataset: UCI Wine Quality (Id: 186) https://archive.ics.uci.edu/dataset/186/wine+quality</li>
     <li>Features: Fixed Acidity, Volatile Acidity, Citric Acid, Residual Sugar, Chlorides, Free Sulfur Dioxide, Total Sulfur Dioxide, Density, pH, Sulphates, Alcohol</li>
     <li>Target: Quality (0 - 10)</li>
+    <li>We use a seed to randomize part of the data to test on</li>
   </ul>
   <h3>Data pre-processing</h3>
   <ul>
@@ -22,8 +23,8 @@
         <li>Number of Iterations: [500, 1000, 2000]</li>
       </ul>
     </li>
-    <li>Logs: Review logs/part1.txt to keep track of learning rates, number of iterations, and MSE</li>
-    <li>Plots: Review plots/mse_vs_iteration_p1.png and plots/features_vs_target_p1.png for MSE and feature trends</li>
+    <li>Logs: Review logs/part1_trial#.txt to keep track of learning rates, number of iterations, and MSE</li>
+    <li>Plots: Review plots/p1_mse_vs_iteration_trial#.png and plots/p1_features_vs_target_trial#.png for MSE and feature trends</li>
   </ul>
   <h3>Results</h3>
   <ul>
@@ -31,6 +32,9 @@
     <li>R^2 = 0.320655</li>
     <li>Training MSE: 0.542747</li>
     <li>Test MSE: 0.509624</li>
+    <li>Explained Variance: 0.3214</li>
+    <li>Bias: 5.7877</li>
+    <li>Weights: [0.07358287, -0.19358273, 0.02227252, 0.1666487, -0.02510952, 0.12427732, -0.15069123, -0.16917101, 0.0850293, 0.12480173, 0.31321147]</li>
   </ul>
   <h3>Are you satisfied that you have found the best solution? Explain.</h3>
   <ul>
@@ -44,6 +48,7 @@
     <li>Dataset: UCI Wine Quality (Id: 186)</li>
     <li>Features: Fixed Acidity, Volatile Acidity, Citric Acid, Residual Sugar, Chlorides, Free Sulfur Dioxide, Total Sulfur Dioxide, Density, pH, Sulphates, Alcohol</li>
     <li>Target: Quality (0 - 10)</li>
+    <li>We use a seed to randomize part of the data to test on</li>
   </ul>
   <h3>Data pre-processing</h3>
   <ul>
@@ -61,8 +66,8 @@
         <li>Number of Iterations: [500, 1000, 2000]</li>
       </ul>
     </li>
-    <li>Logs: Review logs/part2.txt to keep track of learning rates, number of iterations, and MSE</li>
-    <li>Plots: Review plots/mse_vs_iteration_p2.png and plots/features_vs_target_p2.png for MSE and feature trends</li>
+    <li>Logs: Review logs/part2_trial#.txt to keep track of learning rates, number of iterations, and MSE</li>
+    <li>Plots: Review plots/p2_mse_vs_iteration_trial#.png and plots/p2_features_vs_target_trial#.png for MSE and feature trends</li>
   </ul>
   <h3>Results</h3>
   <ul>
@@ -70,10 +75,13 @@
     <li>R^2 = 0.320518</li>
     <li>Training MSE: 0.542749</li>
     <li>Test MSE: 0.509726</li>
+    <li>Explained Variance: 0.3213</li>
+    <li>Bias: 5.7872</li>
+    <li>Weights: [0.0743224, -0.1925495, 0.02211341, 0.16721579, -0.02562908, 0.12492398, -0.15111438, -0.17186991, 0.08507857, 0.12545151, 0.31213117]</li>
   </ul>
-  <h3>Are you satisfied that the package has found the best solution. How can you check. Explain.</h3>
+  <h3>Are you satisfied that the package has found the best solution? How can you check? Explain.</h3>
   <ul>
-    <li>Yes, because similar to Part 1, the more iterations there is, the closer the MSE converges to a consistent value. To check, I monitor MSE convergence and use R^2 as a performance metric. I compare my results to Part 1 and see that they are all consistent.</li>
+    <li>Yes, because similar to Part 1, the more iterations there is, the closer the MSE converges to a consistent value. To check, I monitor MSE convergence and use R^2 as a performance metric. I compare my results to Part 1 and while the optimal number of iterations and learning rate are different, the performance metrics and model evaluation are consistent thanks to the additional parameters.</li>
   </ul>
 </div>
 

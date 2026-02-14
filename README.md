@@ -4,6 +4,7 @@
 <h3>Linear regression using gradient descent with custom implementation (Part 1) and Sciki-Learn's SGDRegressor (Part 2)</h3>
 <h2>Setup</h2>
   <ul>
+    <li>Important: Make sure you are in the same directory as part1.py and part2.py to setup and run them!</li>
     <li>Dataset: Wine Quality from UCI ML (ID 186)
       <ul>
         <li>Publicly hosted at: https://archive.ics.uci.edu/dataset/186/wine+quality</li>

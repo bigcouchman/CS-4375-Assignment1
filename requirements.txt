@@ -1,0 +1,5 @@
+nump
+pandas
+scikit-learn
+matplotlib
+ucimlrepo

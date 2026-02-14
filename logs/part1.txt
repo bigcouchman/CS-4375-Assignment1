@@ -1,0 +1,13 @@
+Iterations = 500: Learning Rate = 0.05, Training MSE = 0.5429
+Iterations = 1000: Learning Rate = 0.05, Training MSE = 0.5428
+Iterations = 2000: Learning Rate = 0.05, Training MSE = 0.5427
+Iterations = 500: Learning Rate = 0.01, Training MSE = 0.5455
+Iterations = 1000: Learning Rate = 0.01, Training MSE = 0.5431
+Iterations = 2000: Learning Rate = 0.01, Training MSE = 0.5429
+Iterations = 500: Learning Rate = 0.001, Training MSE = 12.9312
+Iterations = 1000: Learning Rate = 0.001, Training MSE = 5.1050
+Iterations = 2000: Learning Rate = 0.001, Training MSE = 1.1663
+Best parameters: (0.05, 2000)
+Explained variance: 0.3214, Bias: 5.787729196051344
+Weights: [ 0.07358287 -0.19358273  0.02227252  0.1666487  -0.02510952  0.12427732
+ -0.15069123 -0.16917101  0.0850293   0.12480173  0.31321147]
